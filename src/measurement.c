@@ -39,7 +39,7 @@ void get_temperature_data(void){
 		temp_data.t1=get_temperature_ADC(temp_data.r1);	
 		temp_data.t4=get_temperature_ADC(temp_data.r2);	
 }
-
+//it's not a better way to get temperature data from 10k-NTC sensor
 char get_temperature_ADC(int r_value){
 	long int a,b,c,d,x;
 	char i;
@@ -97,6 +97,7 @@ l=ADC1->DRL;
 return ((h<<2)|l); 
 }
 
+//getting realy good resistence value from any sensor (it requires setting value of resistance-divider )
 unsigned int resistance_calculation ( unsigned int r_value, unsigned int value_ADC)
 {
   return(((unsigned long int)r_value*value_ADC)/(1024-value_ADC));
