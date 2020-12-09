@@ -39,27 +39,26 @@ void get_temperature_data(void){
 		temp_data.t1=get_temperature_ADC(temp_data.r1);	
 		temp_data.t4=get_temperature_ADC(temp_data.r2);	
 }
-//it's not a better way to get temperature data from 10k-NTC sensor
+
+//it goes from 20 to 115 C (+/- 1C)
 char get_temperature_ADC(int r_value){
-	long int a,b,c,d,x;
-	char i;
-	char t;
-	long int dr,dr_min;
-	a=-28;
-	b=15417;
-	c=-2972800;
-	d=212060000;
-	dr_min=2000000000;
+	long int x;
 	
-	
-	for(i=40;i<240;i++)
-	{
-	x=(a*i*i*i+b*i*i+c*i+d);
-	dr=(x/10000)-r_value;
-	dr*=dr;
-  if(dr<dr_min){dr_min=dr;t=i;}
+  if(r_value > 7000) {
+	x=((long int)27000-r_value)*15/100;
+  }	
+  else if(r_value > 2350) {
+	x=(((long int)r_value * r_value )/ 100000 * 9) - ((long int)r_value/10*15) + 9100;
   }
-	return t-t/25;
+  else if (r_value < 1050){
+	x=(((long int)r_value * r_value )/ 500) - ((long int)r_value/10*78) + 14600;
+  }
+
+//r=1050...2350
+  else{
+	x=(((long int)r_value * r_value )*95/ 100000 ) - ((long int)r_value/10*51) + 12900;
+  }
+	return x/50;
 }
 	
 void store_t1_in_array(void){
