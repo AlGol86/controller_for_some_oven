@@ -5,3 +5,4 @@
 * OLED display 128*32 (I2C interface)
 * ntc temperature sensors/lm75a temperature sensors (quantity of sensors can be adjusted)
 * Solid relay, load (heater)
+![appearance]
