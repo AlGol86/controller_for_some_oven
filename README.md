@@ -7,4 +7,4 @@
 * Solid relay, load (heater)
 ![appearance](https://github.com/AlGol86/controller_for_some_oven/blob/main/pic/Prototype.jpg)
 ### Some point:
-** to
+- to
