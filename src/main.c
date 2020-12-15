@@ -1,14 +1,14 @@
 #include "stm8s.h"
 #include "main.h"
-encoder_t 				encoder;
-temp_data_t 			temp_data;
-display_buffer_t 	db;	
-sys_time_t 				sys_time;
-output_power_t 		output_power;
-@near char			  array_data_temp [256];//store temperanure every 5 sec
-menu_t 						menu,previous_menu;
-char cmf;                               //changed menu flag
-eeprom_data_t eeprom_data @0x4010;
+encoder_t 	    encoder;
+temp_data_t 	    temp_data;
+display_buffer_t    db;	
+sys_time_t 	    sys_time;
+output_power_t 	    output_power;
+@near char	    array_data_temp [256];  //store temperanure every 5 sec
+menu_t 		    menu,previous_menu;
+char                cmf;                    //changed menu flag
+eeprom_data_t       eeprom_data @0x4010; 
 
 
 main()
@@ -22,26 +22,26 @@ main()
 	init_ssd1306_2(address_iic_oled);	//OLED display initialization
 	previous_menu=1;
 	output_power.previous_power=100;
-  start_time_while(task_get_temp,1);
+        start_time_while(task_get_temp,1);
 	start_time_while(task_set_power,4);
 	start_time_while(task_store_t1_in_array,2);
 	start_time_while(task_regulator,2);
 	
 	while (1)	{
 		
-///get_temp		
+///get_temp             (every 1 second)		
 	  if(check_time_while(task_get_temp)) {           
 		  get_temperature_data();
 			start_time_while(task_get_temp,1);
 		}
 		
-///store_t1_in_array		
+///store_t1_in_array	(every 5 second)	
 	  if(check_time_while(task_store_t1_in_array)) {  
 		  store_t1_in_array();
 			start_time_while(task_store_t1_in_array,5);
 		}
 		
-///adjust_power		
+///adjust_power		(every 2 second)
 		if(check_time_while(task_regulator)) {        
 		if(eeprom_data.power_control_mode==position){
 			if(temp_data.t1>=(eeprom_data.preset_temp<<1)) output_power.power=0;
@@ -54,7 +54,7 @@ main()
 		start_time_while(task_regulator,2);
 	  }
 		
-///set_power		
+///set_power		(every 4 second)	
     if(check_time_while(task_set_power)){           
       if(output_power.previous_power!=output_power.power){
 			  init_tim1((257*(int)output_power.power)/100); 
@@ -270,7 +270,11 @@ void out(out_data_t pin_out,out_data_t event ){ //set pinout
 	break;}
 	}
 }
-	
+/*******************************************************************
+** 1. Get current time						****
+** 2. Calculate time-label in future, put it in label_array	****
+** 3. Reset event-flag						****
+*******************************************************************/
 void start_time_while(task_t task, int seconds){
 		extern sys_time_t sys_time;
 		unsigned long int current_seconds=seconds+sys_time.relative_seconds+(long int)sys_time.relative_hours*3600;
@@ -279,7 +283,9 @@ void start_time_while(task_t task, int seconds){
 		*((&sys_time.time_label_hours[0])+*(&task))=current_seconds/3600;
 		*(&sys_time.task_event_f[0]+task)=0;
 }
-	
+/********************************************************************** 
+**     Checking event-flag					    ***
+**********************************************************************/
 char check_time_while(task_t task){
 	  extern sys_time_t sys_time;
 		if(*(&sys_time.task_event_f[0]+task)){
