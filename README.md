@@ -6,3 +6,5 @@
 * ntc temperature sensors/lm75a temperature sensors (quantity of sensors can be adjusted)
 * Solid relay, load (heater)
 ![appearance](https://github.com/AlGol86/controller_for_some_oven/blob/main/pic/Prototype.jpg)
+### Some point:
+** to
