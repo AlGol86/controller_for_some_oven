@@ -114,6 +114,19 @@ t=t/10000000;
 return t;
 }
 
+char get_temp_8(char addr)
+{
+int t=0,tt=0;
+start_iic (addr, READ);
+t=receive_byte (1);
+tt=receive_byte (0);
+stop_iic ();
+t<<=1;
+tt>>=7;
+t+=tt;
+return ((char)t);
+}
+
 ///save to eeprom
 void write_eeprom(char* addr_eeprom,char data)
 { sim();
