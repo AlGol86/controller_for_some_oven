@@ -28,18 +28,20 @@ struct interrupt_vector {
 	sys_time.tick++;
 	if (sys_time.tick&1) {
 	  sys_time.relative_seconds++; //count seconds
-    if (sys_time.relative_seconds==3600){
+          if (sys_time.relative_seconds==3600){
 		  sys_time.relative_seconds=0;
 		  sys_time.relative_hours++;
 	  }
-		
-		for(i=task_1;i<=task_10;i++){//time_management
-			if((sys_time.relative_seconds==(*(&sys_time.time_label_seconds[0]+i)))\
-			&&(sys_time.relative_hours==(*(&sys_time.time_label_hours[0]+i)))) {
-				*(&sys_time.task_event_f[0]+i)=1;
-		}	
-	}
-  }
+/*******************************************************************
+** check time-event matches and set corresponding flag to the task**
+********************************************************************/
+	  for(i=task_1;i<=task_10;i++){//time_management
+	    if((sys_time.relative_seconds==(*(&sys_time.time_label_seconds[0]+i)))\ //if hours & seconds match to the event-->>set "task_event_flag"
+	    &&(sys_time.relative_hours==(*(&sys_time.time_label_hours[0]+i)))) {
+		*(&sys_time.task_event_f[0]+i)=1;
+	    }	
+	  }
+        }
 	return;
 }
 
