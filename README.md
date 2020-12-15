@@ -11,4 +11,4 @@
  - Counting seconds from reset by interrupt handler (embedded timer TIM1), checking matches set time-labels for every task
  - In the begining (during initialization) execute method "SET_TIME_WHILE(task_t task, time_while_seconds)" for every task
  - In the main thread execute checking "CHECK_TASK_FLAG(task_t task)" for every task. If flag==1 for the task, perform the task and execute "SET_TIME_WHILE(task_t task, time_while_seconds)" (else skip the task).  
- _This allows to create a long list of tasks and execute they in the time rulls_**
+**_This allows to create a long list of tasks and execute they in the time rulls_**
