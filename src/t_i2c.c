@@ -1,6 +1,9 @@
 #include "stm8s.h"
 #include "main.h"
-
+/****************************************
+*This is implementation of iic-interface. It works at 2MHz frequency MCU. 
+*If You need to change frequency, please replace delays
+****************************************/
 void sys_del_us(char del_us)	
 {
 char i;
