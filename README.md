@@ -1,4 +1,4 @@
-# controller_for_some_oven
+# controller_for_some_heater
 ## This device consists of several details:
 * MCU stm8s103f3p
 * Encoder with embedded button
