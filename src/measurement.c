@@ -7,18 +7,16 @@ char calc_PWM(void){
 	extern temp_data_t temp_data;
 	extern eeprom_data_t eeprom_data @0x4010;
 	int dt,dt_dt,power;
-	
-
-		
-	dt=(eeprom_data.preset_temp<<1)-temp_data.t1; //temp error
-	dt_dt=(temp_data.t1-temp_data.previous_temp); //speed of temp_change
-	temp_data.err_temp_integral+=dt*10/eeprom_data.kki ;//integral of temp_error
-	if(temp_data.err_temp_integral>300) 
-	temp_data.err_temp_integral=300;
-	else if(temp_data.err_temp_integral<-300)temp_data.err_temp_integral=-300;
+			
+	dt    = (eeprom_data.preset_temp<<1) - temp_data.t1; //temp error
+	dt_dt = temp_data.t1 - temp_data.previous_temp; //speed of temp_change
+	temp_data.err_temp_integral += (dt*500) / eeprom_data.kki ;//integral of temp_error
+	if(temp_data.err_temp_integral>15000) 
+	temp_data.err_temp_integral=15000;
+	else if(temp_data.err_temp_integral<-15000)temp_data.err_temp_integral=-15000;
 	
 	temp_data.t_p1=(dt*50)/eeprom_data.kp;
-	temp_data.t_p2=(50*temp_data.err_temp_integral)/eeprom_data.ki/eeprom_data.kp;
+	temp_data.t_p2=(temp_data.err_temp_integral)/eeprom_data.ki/eeprom_data.kp;
 	temp_data.t_p3=(eeprom_data.kd*50*dt_dt)/eeprom_data.kp;
 	power=temp_data.t_p1  +  temp_data.t_p2  -  temp_data.t_p3;
 	/////proportional//integral///////////////////////////////////////differencial////////
